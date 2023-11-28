@@ -17,19 +17,12 @@ namespace Ancestry.Controllers
         public IActionResult Index()
         {
             List<GEDCOMIndividual> individuals = _dataRepository.GetAllIndividuals();
-
-            // Assigning unique IDs to individuals
-            for (int i = 0; i < individuals.Count; i++)
-            {
-                individuals[i].Id = i + 1; // Assigning IDs sequentially starting from 1
-            }
-
             return View(individuals);
         }
 
-        public IActionResult Details(string gedcomId)
+        public IActionResult Details(string individualId)
         {
-            GEDCOMIndividual individual = _dataRepository.GetIndividualByGEDCOMId(gedcomId);
+            GEDCOMIndividual individual = _dataRepository.GetIndividualByIndividualId(individualId);
             if (individual == null)
             {
                 return NotFound();

@@ -37,20 +37,26 @@ namespace Ancestry.Repository
             return individuals;
         }
 
-        public GEDCOMIndividual GetIndividualByGEDCOMId(string gedcomId)
+        public GEDCOMIndividual GetIndividualByIndividualId(string individualId)
         {
-            // Fetch an individual by GEDCOM-specific ID from the list obtained in GetAllIndividuals()
-            return GetAllIndividuals().Find(i => i.GEDCOMId == gedcomId);
+            string formattedId = $"@I{individualId}@";
+
+            // Fetch an individual by their GEDCOM-specific ID from the list obtained in GetAllIndividuals()
+            return GetAllIndividuals().Find(i => i.GEDCOMId == formattedId);
         }
+
 
 
         private GEDCOMIndividual ParseLineToIndividual(string line)
         {
-            // Logic to parse a line from the GEDCOM file and create a GEDCOMIndividual object
-            // Implement according to your GEDCOM file structure
-            // Example parsing logic:
+
+            // Create individual object
             GEDCOMIndividual individual = new GEDCOMIndividual();
-            // Populate individual properties from the line data
+
+            // Extract and set GEDCOMId
+            string currentId = line.Split('@')[1]; // Extracting the ID between @ symbols
+            individual.GEDCOMId = currentId;
+            
             return individual;
         }
     }

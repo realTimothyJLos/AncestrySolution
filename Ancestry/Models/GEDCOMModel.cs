@@ -17,5 +17,7 @@
         public string Notes { get; set; }
         public List<GEDCOMSource> Sources { get; set; }
 
+        public string IndividualId { get; set; } // ID for individual
+        public string FamilyId { get; set; } // ID for family
     }
 }

@@ -1,16 +1,22 @@
 ﻿using Ancestry.Repository;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 
 namespace Ancestry
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
-            string filePath = @"C:\Users\timot\Downloads\Master Family Tree.ged";
+            string filePath = Configuration["FilePaths:GEDCOMFilePath"];
             services.AddSingleton<GEDCOMDataRepository>(_ => new GEDCOMDataRepository(filePath));
-            services.AddControllersWithViews(); 
+            services.AddControllersWithViews();
         }
 
         public void Configure(IApplicationBuilder app)
