@@ -1,6 +1,12 @@
-﻿namespace Ancestry.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DataTransferObjects.GEOCOM
 {
-    public class GEDCOMSource
+    public class GEDCOMSources
     {
         public string Title { get; set; }
         public string Author { get; set; }

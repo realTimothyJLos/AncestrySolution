@@ -39,12 +39,12 @@ namespace Ancestry.Repository
 
         public GEDCOMIndividual GetIndividualByIndividualId(string individualId)
         {
-            string formattedId = $"@I{individualId}@";
+            // Assuming individualId is passed as I422532423762 in the URL
+            string formattedId = $"@I{individualId}@"; // Format it to match GEDCOM IDs
 
             // Fetch an individual by their GEDCOM-specific ID from the list obtained in GetAllIndividuals()
             return GetAllIndividuals().Find(i => i.GEDCOMId == formattedId);
         }
-
 
 
         private GEDCOMIndividual ParseLineToIndividual(string line)

@@ -1,4 +1,5 @@
 ﻿using Ancestry.Repository;
+using Ancestry.Utilities.Constraints;
 using Microsoft.Extensions.Configuration;
 
 namespace Ancestry
@@ -22,12 +23,22 @@ namespace Ancestry
         public void Configure(IApplicationBuilder app)
         {
             app.UseRouting();
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "individualDetails",
+                    pattern: "Individual/Details/{individualId}",
+                    defaults: new { controller = "Individual", action = "Details" },
+                    constraints: new { individualId = new GEDCOMIdConstraint() }
+                );
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
+
     }
 }
