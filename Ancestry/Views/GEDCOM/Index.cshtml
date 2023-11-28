@@ -1,0 +1,64 @@
+﻿@model List<Ancestry.Models.GEDCOMIndividual>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GEDCOM Data</title>
+    <style>
+        /* Basic styling for the table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+        /* Style for clickable links */
+        a {
+            text-decoration: none;
+            color: blue;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+    </style>
+</head>
+<body>
+    <h1>GEDCOM Data</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Birth Date</th>
+                <th>Death Date</th>
+                <th>Gender</th>
+                <!-- Add more headers if needed -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var individual in Model)
+            {
+                <tr>
+                    <td><a href="@Url.Action("Details", "Individual", new { gedcomId = individual.GEDCOMId })">@individual.Name</a></td>
+                    <td>@individual.BirthDate</td>
+                    <td>@individual.DeathDate</td>
+                    <td>@individual.Gender</td>
+                    <!-- Add more columns with individual details -->
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- You can add more sections or elements here to enhance the page -->
+</body>
+</html>
