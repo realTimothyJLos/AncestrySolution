@@ -3,8 +3,7 @@
     public class GEDCOMIndividual
     {
         public int Id { get; set; }
-        public string GEDCOMId { get; set; } // GEDCOM-specific ID property
-
+        public string GEDCOMId { get; set; } 
         public string Name { get; set; }
         public string BirthDate { get; set; }
         public string DeathDate { get; set; }
@@ -17,7 +16,19 @@
         public string Notes { get; set; }
         public List<GEDCOMSource> Sources { get; set; }
 
+        public List<Individual> Spouses { get; set; }
+        public List<Individual> Children { get; set; }
+
         public string IndividualId { get; set; } // ID for individual
         public string FamilyId { get; set; } // ID for family
     }
+
+    public class Individual
+    {
+        public string Name { get; set; }
+        // Other properties as needed
+    }
+
 }
+
+

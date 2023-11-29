@@ -5,7 +5,28 @@
 <head>
     <title>GEDCOM Data</title>
     <style>
-        /* Basic styling for the table */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -14,62 +35,163 @@
 
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 10px;
             text-align: left;
         }
 
         th {
             background-color: #f2f2f2;
         }
-        /* Style for clickable links */
+
         a {
             text-decoration: none;
-            color: blue;
+            color: #007bff;
         }
 
             a:hover {
                 text-decoration: underline;
             }
+
+        .search-container {
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            padding: 8px;
+            border: 1px solid #ddd;
+            width: 250px;
+            margin-right: 10px;
+        }
+
+        .filter-select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <h1>GEDCOM Data</h1>
+    <div class="container">
+        <h1>GEDCOM Data</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Birth Date</th>
-                <th>Death Date</th>
-                <th>Gender</th>
-                <!-- Add more headers if needed -->
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var individual in Model)
-            {
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-box" placeholder="Search by name...">
+            <select id="statusFilter" class="filter-select">
+                <option value="all">All</option>
+                <option value="living">Living</option>
+                <option value="dead">Dead</option>
+            </select>
+        </div>
+
+        <table id="gedcomTable">
+            <thead>
                 <tr>
-                    <td>
-                        @if (individual.GEDCOMId.StartsWith("@I") && individual.GEDCOMId.EndsWith("@"))
-                        {
-                            <a href="@Url.Action("Details", "Individual", new { individualId = individual.GEDCOMId })">@individual.Name</a>
-                        }
-                        else
-                        {
-                        // Handle incorrect GEDCOMId format
-                            <span>GEDCOMId is in an incorrect format</span>
-                        }
-                    </td>
-
-                    <td>@individual.BirthDate</td>
-                    <td>@individual.DeathDate</td>
-                    <td>@individual.Gender</td>
-                    <!-- Add more columns with individual details -->
+                    <th onclick="sortTable(0)">Name</th>
+                    <th>Birth Date</th>
+                    <th>Death Date</th>
+                    <th>Gender</th>
+                    <!-- Add more headers if needed -->
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var individual in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (individual.GEDCOMId.StartsWith("@I") && individual.GEDCOMId.EndsWith("@"))
+                            {
+                                <a href="@Url.Action("Details", "Individual", new { individualId = individual.GEDCOMId })">@individual.Name</a>
+                            }
+                            else
+                            {
+                                <span>GEDCOMId is in an incorrect format</span>
+                            }
+                        </td>
 
-    <!-- You can add more sections or elements here to enhance the page -->
+                        <td>@individual.BirthDate</td>
+                        <td>@individual.DeathDate</td>
+                        <td>@individual.Gender</td>
+                        <!-- Add more columns with individual details -->
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Sorting function for the table
+        function sortTable(column) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("gedcomTable");
+            switching = true;
+
+            while (switching) {
+                switching = false;
+                rows = table.getElementsByTagName("tr");
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("td")[column];
+                    y = rows[i + 1].getElementsByTagName("td")[column];
+
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+
+        // Search functionality
+        document.getElementById("searchInput").addEventListener("keyup", function () {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("gedcomTable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0]; // Change index to the column you want to search
+
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        });
+
+        // Filter functionality
+        document.getElementById("statusFilter").addEventListener("change", function () {
+            var input, filter, table, tr, td, i, status;
+            input = document.getElementById("statusFilter");
+            filter = input.value.toLowerCase();
+            table = document.getElementById("gedcomTable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 1; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[2]; // Change index to the column where the status is
+
+                if (td) {
+                    status = td.innerText.toLowerCase();
+
+                    if (filter === "all" || status.indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>

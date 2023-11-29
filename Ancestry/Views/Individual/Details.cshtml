@@ -1,13 +1,15 @@
-﻿@model Ancestry.Models.GEDCOMIndividual
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>Individual Details</title>
     <style>
-        .container {
+        .individualcontainer {
             display: flex;
             justify-content: space-between;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .key-facts {
@@ -15,30 +17,199 @@
             margin-right: 20px;
         }
 
+        .spouse-children-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .spouse-children {
+            flex: 1;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+
+            .spouse-children h4 {
+                margin-top: 0;
+            }
+
+            .spouse-children ul {
+                list-style: none;
+                padding: 0;
+            }
+
+                .spouse-children ul li {
+                    margin-bottom: 5px;
+                }
+
         .photo {
             flex: 1;
         }
 
-        /* Additional styling as needed */
-        /* You can modify the styles according to your design requirements */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: calc(100% - 40px); /* Match container width */
+            margin: 20px auto; /* Center the toolbar */
+        }
+
+            .toolbar .left-options {
+                display: flex;
+            }
+
+            .toolbar .right-options {
+                margin-left: auto;
+            }
+
+            .toolbar .options {
+                margin-right: 20px;
+                text-decoration: none;
+                color: blue;
+            }
+
+            .toolbar .red-button {
+                background-color: red;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 5px;
+                text-decoration: none;
+            }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            width: 60%;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        .help-content {
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+
+        .red-button {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+            .red-button:hover {
+                background-color: #c0392b;
+            }
     </style>
 </head>
 <body>
-    <h1>Individual Details</h1>
-
-    <div class="container">
+    <div class="individualcontainer">
         <div class="key-facts">
-            <h3>Name: @Model.Name</h3>
+            <h3>@Model.Name</h3>
             <p>Birth Date: @Model.BirthDate</p>
             <p>Death Date: @Model.DeathDate</p>
             <p>Gender: @Model.Gender</p>
-            <!-- Other key facts can be added here -->
         </div>
 
         <div class="photo">
             <!-- Photo display goes here -->
-            <!-- Example: -->
             <img src="path_to_photo.jpg" alt="Photo" style="max-width: 100%; height: auto;">
+        </div>
+    </div>
+    <!-- Toolbar section -->
+    <div class="toolbar">
+        <div class="left-options">
+            <a href="#" class="options">View Photo Albums</a>
+            <a href="#" class="options">View Videos</a>
+        </div>
+        <div class="right-options">
+            <a href="#" class="red-button" onclick="openModal()">Need Help</a>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Need Help?</h2>
+            <div class="help-content">
+                <p>If you require assistance, please feel free to reach out to our support team.</p>
+                <p>Contact us at: support@yourwebsite.com</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ... (Remaining content remains unchanged) ... -->
+
+    <script>
+        function openModal() {
+            document.getElementById("helpModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("helpModal").style.display = "none";
+        }
+    </script>
+
+    <div class="spouse-children-container">
+        <div class="spouse-children">
+            <h4>Spouse(s):</h4>
+            <ul>
+                <!-- Populate spouse list here -->
+                <!-- Example: -->
+                <li>Spouse 1</li>
+                <li>Spouse 2</li>
+            </ul>
+        </div>
+        <div class="spouse-children">
+            <h4>Children:</h4>
+            <ul>
+                <!-- Populate children list here -->
+                <!-- Example: -->
+                <li>Child 1</li>
+                <li>Child 2</li>
+            </ul>
         </div>
     </div>
 </body>
