@@ -49,7 +49,18 @@
             @foreach (var individual in Model)
             {
                 <tr>
-                    <td><a href="@Url.Action("Details", "Individual", new { individualId = individual.GEDCOMId })">@individual.Name</a></td>
+                    <td>
+                        @if (individual.GEDCOMId.StartsWith("@I") && individual.GEDCOMId.EndsWith("@"))
+                        {
+                            <a href="@Url.Action("Details", "Individual", new { individualId = individual.GEDCOMId })">@individual.Name</a>
+                        }
+                        else
+                        {
+                        // Handle incorrect GEDCOMId format
+                            <span>GEDCOMId is in an incorrect format</span>
+                        }
+                    </td>
+
                     <td>@individual.BirthDate</td>
                     <td>@individual.DeathDate</td>
                     <td>@individual.Gender</td>

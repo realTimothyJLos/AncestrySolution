@@ -4,15 +4,42 @@
 <html>
 <head>
     <title>Individual Details</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .key-facts {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .photo {
+            flex: 1;
+        }
+
+        /* Additional styling as needed */
+        /* You can modify the styles according to your design requirements */
+    </style>
 </head>
 <body>
     <h1>Individual Details</h1>
 
-    <div>
-        <h3>Name: @Model.Name</h3>
-        <p>Birth Date: @Model.BirthDate</p>
-        <p>Death Date: @Model.DeathDate</p>
-        <p>Gender: @Model.Gender</p>
+    <div class="container">
+        <div class="key-facts">
+            <h3>Name: @Model.Name</h3>
+            <p>Birth Date: @Model.BirthDate</p>
+            <p>Death Date: @Model.DeathDate</p>
+            <p>Gender: @Model.Gender</p>
+            <!-- Other key facts can be added here -->
+        </div>
+
+        <div class="photo">
+            <!-- Photo display goes here -->
+            <!-- Example: -->
+            <img src="path_to_photo.jpg" alt="Photo" style="max-width: 100%; height: auto;">
+        </div>
     </div>
 </body>
 </html>

@@ -1,6 +1,5 @@
-﻿using Ancestry.Repository;
-using Ancestry.Utilities.Constraints;
-using Microsoft.Extensions.Configuration;
+﻿using Ancestry.Parsing;
+using Ancestry.Repository;
 
 namespace Ancestry
 {
@@ -17,11 +16,17 @@ namespace Ancestry
         {
             string filePath = Configuration["FilePaths:GEDCOMFilePath"];
             services.AddSingleton<GEDCOMDataRepository>(_ => new GEDCOMDataRepository(filePath));
+            services.AddScoped<GEDCOMParser>();
+
             services.AddControllersWithViews();
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            app.UseStaticFiles(); // This middleware serves static files from wwwroot folder
+
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -29,15 +34,14 @@ namespace Ancestry
                 endpoints.MapControllerRoute(
                     name: "individualDetails",
                     pattern: "Individual/Details/{individualId}",
-                    defaults: new { controller = "Individual", action = "Details" },
-                    constraints: new { individualId = new GEDCOMIdConstraint() }
-                );
+                    defaults: new { controller = "Individual", action = "Details" });
 
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
 
 
     }
